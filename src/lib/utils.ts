@@ -27,6 +27,27 @@ export function daysUntil(dateStr: string): number {
 	return Math.round((target.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
 }
 
+export function advanceBillingDate(
+	dateStr: string,
+	billingCycle: 'monthly' | 'yearly'
+): string {
+	const today = new Date();
+	today.setHours(0, 0, 0, 0);
+	const [y, m, d] = dateStr.split('-').map(Number);
+	const date = new Date(y, m - 1, d);
+	while (date.getTime() < today.getTime()) {
+		if (billingCycle === 'monthly') {
+			date.setMonth(date.getMonth() + 1);
+		} else {
+			date.setFullYear(date.getFullYear() + 1);
+		}
+	}
+	const yyyy = date.getFullYear();
+	const mm = String(date.getMonth() + 1).padStart(2, '0');
+	const dd = String(date.getDate()).padStart(2, '0');
+	return `${yyyy}-${mm}-${dd}`;
+}
+
 export function formatMoney(amount: number, currency = 'EUR'): string {
 	return new Intl.NumberFormat(undefined, { style: 'currency', currency }).format(amount);
 }

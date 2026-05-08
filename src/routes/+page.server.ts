@@ -1,12 +1,25 @@
 import { db } from '$lib/server/db';
 import { subscriptions } from '$lib/server/schema';
-import { asc } from 'drizzle-orm';
+import { asc, eq } from 'drizzle-orm';
 import type { PageServerLoad, Actions } from './$types';
 import { fail } from '@sveltejs/kit';
+import { advanceBillingDate, daysUntil } from '$lib/utils';
 
 export const load: PageServerLoad = async () => {
 	const subs = await db.select().from(subscriptions).orderBy(asc(subscriptions.nextBillingDate));
-	return { subscriptions: subs };
+	const rolled = await Promise.all(
+		subs.map(async (sub) => {
+			if (daysUntil(sub.nextBillingDate) >= 0) return sub;
+			const nextBillingDate = advanceBillingDate(sub.nextBillingDate, sub.billingCycle);
+			await db
+				.update(subscriptions)
+				.set({ nextBillingDate })
+				.where(eq(subscriptions.id, sub.id));
+			return { ...sub, nextBillingDate };
+		})
+	);
+	rolled.sort((a, b) => a.nextBillingDate.localeCompare(b.nextBillingDate));
+	return { subscriptions: rolled };
 };
 
 export const actions: Actions = {
