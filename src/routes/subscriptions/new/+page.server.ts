@@ -2,6 +2,7 @@ import { db } from '$lib/server/db';
 import { subscriptions } from '$lib/server/schema';
 import { parseSubscriptionForm } from '$lib/server/validate';
 import { fail, redirect } from '@sveltejs/kit';
+import { base } from '$app/paths';
 import type { Actions } from './$types';
 
 export const actions: Actions = {
@@ -15,6 +16,6 @@ export const actions: Actions = {
 			});
 		}
 		await db.insert(subscriptions).values(parsed.value);
-		throw redirect(303, '/');
+		throw redirect(303, `${base}/`);
 	}
 };

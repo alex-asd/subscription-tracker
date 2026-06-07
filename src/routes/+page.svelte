@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { base } from '$app/paths';
 	import { totalsByCurrency, monthlyEquivalent, daysUntil, formatMoney } from '$lib/utils';
 	import type { PageProps } from './$types';
 
@@ -35,7 +36,7 @@
 	<div class="rounded-lg border border-dashed border-slate-700 bg-slate-900/50 p-10 text-center">
 		<p class="text-slate-400">No subscriptions yet.</p>
 		<a
-			href="/subscriptions/new"
+			href="{base}/subscriptions/new"
 			class="mt-3 inline-block rounded-md bg-indigo-500 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-400"
 		>
 			Add your first one
@@ -53,7 +54,7 @@
 				<div class="min-w-0 flex-1">
 					<div class="flex items-center gap-2">
 						<a
-							href="/subscriptions/{sub.id}/edit"
+							href="{base}/subscriptions/{sub.id}/edit"
 							class="truncate font-medium text-slate-100 hover:underline"
 						>
 							{sub.name}

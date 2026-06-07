@@ -5,7 +5,12 @@ import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 const config = {
 	preprocess: vitePreprocess(),
 	kit: {
-		adapter: adapter()
+		adapter: adapter(),
+		paths: {
+			// Build-time base path. Set BASE_PATH=/subs when running `npm run build`
+			// for the reverse-proxy deployment; empty for local dev.
+			base: process.env.BASE_PATH || ''
+		}
 	}
 };
 

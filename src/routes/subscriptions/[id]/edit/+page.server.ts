@@ -3,6 +3,7 @@ import { subscriptions } from '$lib/server/schema';
 import { parseSubscriptionForm } from '$lib/server/validate';
 import { error, fail, redirect } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
+import { base } from '$app/paths';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ params }) => {
@@ -26,6 +27,6 @@ export const actions: Actions = {
 			});
 		}
 		await db.update(subscriptions).set(parsed.value).where(eq(subscriptions.id, id));
-		throw redirect(303, '/');
+		throw redirect(303, `${base}/`);
 	}
 };

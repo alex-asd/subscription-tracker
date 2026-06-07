@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { base } from '$app/paths';
 	import type { Subscription } from '$lib/server/schema';
 
 	interface Props {
@@ -114,7 +115,7 @@
 	</div>
 
 	<div class="flex items-center justify-between pt-2">
-		<a href="/" class="text-sm text-slate-400 hover:text-slate-200">Cancel</a>
+		<a href="{base}/" class="text-sm text-slate-400 hover:text-slate-200">Cancel</a>
 		<button
 			type="submit"
 			class="rounded-md bg-indigo-500 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-400"
